@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)https://allen-in-site.vercel.app/extraction.html -->
+<html lang="en"><script src="chrome-extension://nimlmejbmnecnaghgmbahmbaddhjbecg/content/location/location.js" id="nimlmejbmnecnaghgmbahmbaddhjbecg"></script><script src="chrome-extension://nimlmejbmnecnaghgmbahmbaddhjbecg/libs/extend-native-history-api.js"></script><script src="chrome-extension://nimlmejbmnecnaghgmbahmbaddhjbecg/libs/requests.js"></script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Extraction</title>
+    <!-- flatpickr CSS -->
+    <link rel="stylesheet" href="./Calendar Extraction_files/flatpickr.min.css">
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        margin: 0;
+      }
+      .calendar-container {
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 800px;
+      }
+      #calendar {
+        max-width: 100%;
+        margin: 0 auto;
+      }
+      .cards-container {
+        margin-top: 2rem;
+      }
+      .card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+      .card-label {
+        color: #666;
+        margin-bottom: 0.5rem;
+      }
+      .card-meeting-id {
+        font-size: 0.9rem;
+        color: #888;
+      }
+      .exBtn {
+        background-color: #888;
+        padding: 10px;
+        width: 20%;
+        text-align: center;
+        border-radius: 20px;
+        color: #fff;
+        text-decoration: solid;
+        font-weight: bold;
+        box-shadow: #888 2px;
+        cursor: grab;
+      }
+      .exBtn:hover {
+        transform: scale(1.1);
+        animation-duration: 0.2s;
+        background-color: #666;
+      }
+      .processing {
+        display: none;
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        color: #666;
+      }
+    </style>
+  <script bis_use="true" type="text/javascript" charset="utf-8" data-bis-config="[&quot;facebook.com/&quot;,&quot;twitter.com/&quot;,&quot;youtube-nocookie.com/embed/&quot;,&quot;//vk.com/&quot;,&quot;//www.vk.com/&quot;,&quot;linkedin.com/&quot;,&quot;//www.linkedin.com/&quot;,&quot;//instagram.com/&quot;,&quot;//www.instagram.com/&quot;,&quot;//www.google.com/recaptcha/api2/&quot;,&quot;//hangouts.google.com/webchat/&quot;,&quot;//www.google.com/calendar/&quot;,&quot;//www.google.com/maps/embed&quot;,&quot;spotify.com/&quot;,&quot;soundcloud.com/&quot;,&quot;//player.vimeo.com/&quot;,&quot;//disqus.com/&quot;,&quot;//tgwidget.com/&quot;,&quot;//js.driftt.com/&quot;,&quot;friends2follow.com&quot;,&quot;/widget&quot;,&quot;login&quot;,&quot;//video.bigmir.net/&quot;,&quot;blogger.com&quot;,&quot;//smartlock.google.com/&quot;,&quot;//keep.google.com/&quot;,&quot;/web.tolstoycomments.com/&quot;,&quot;moz-extension://&quot;,&quot;chrome-extension://&quot;,&quot;/auth/&quot;,&quot;//analytics.google.com/&quot;,&quot;adclarity.com&quot;,&quot;paddle.com/checkout&quot;,&quot;hcaptcha.com&quot;,&quot;recaptcha.net&quot;,&quot;2captcha.com&quot;,&quot;accounts.google.com&quot;,&quot;www.google.com/shopping/customerreviews&quot;,&quot;buy.tinypass.com&quot;,&quot;gstatic.com&quot;,&quot;secureir.ebaystatic.com&quot;,&quot;docs.google.com&quot;,&quot;contacts.google.com&quot;,&quot;github.com&quot;,&quot;mail.google.com&quot;,&quot;chat.google.com&quot;,&quot;audio.xpleer.com&quot;,&quot;keepa.com&quot;,&quot;static.xx.fbcdn.net&quot;,&quot;sas.selleramp.com&quot;,&quot;1plus1.video&quot;,&quot;console.googletagservices.com&quot;,&quot;//lnkd.demdex.net/&quot;,&quot;//radar.cedexis.com/&quot;,&quot;//li.protechts.net/&quot;,&quot;challenges.cloudflare.com/&quot;,&quot;ogs.google.com&quot;]" src="chrome-extension://nimlmejbmnecnaghgmbahmbaddhjbecg/executors/traffic.js"></script><style>@font-face {
+              font-family: 'Open Sans Regular';
+              font-style: normal;
+              font-weight: 400;
+              src: url('chrome-extension://gkkdmjjodidppndkbkhhknakbeflbomf/fonts/open_sans/open-sans-v18-latin-regular.woff');
+          }</style><style>@font-face {
+              font-family: 'Open Sans Bold';
+              font-style: normal;
+              font-weight: 800;
+              src: url('chrome-extension://gkkdmjjodidppndkbkhhknakbeflbomf/fonts/open_sans/OpenSans-Bold.woff');
+          }</style><style>@font-face {
+              font-family: 'Open Sans ExtraBold';
+              font-style: normal;
+              font-weight: 800;
+              src: url('chrome-extension://gkkdmjjodidppndkbkhhknakbeflbomf/fonts/open_sans/open-sans-v18-latin-800.woff');
+          }</style></head>
+  <body __processed_2c08b578-2e09-4041-b447-ffe76cacaf32__="true" bis_register="W3sibWFzdGVyIjp0cnVlLCJleHRlbnNpb25JZCI6Im5pbWxtZWpibW5lY25hZ2hnbWJhaG1iYWRkaGpiZWNnIiwiYWRibG9ja2VyU3RhdHVzIjp7IkRJU1BMQVkiOiJkaXNhYmxlZCIsIkZBQ0VCT09LIjoiZGlzYWJsZWQiLCJUV0lUVEVSIjoiZGlzYWJsZWQiLCJSRURESVQiOiJkaXNhYmxlZCIsIlBJTlRFUkVTVCI6ImRpc2FibGVkIiwiSU5TVEFHUkFNIjoiZGlzYWJsZWQiLCJMSU5LRURJTiI6ImRpc2FibGVkIiwiQ09ORklHIjoiZGlzYWJsZWQifSwidmVyc2lvbiI6IjIuMC4yMiIsInNjb3JlIjoyMDAyMn1d">
+    <div class="calendar-container" bis_skin_checked="1">
+      <h2>Calendar</h2>
+      <input type="text" id="calendar">
+      <div bis_skin_checked="1">
+        <div class="cards-container" id="cards-container" bis_skin_checked="1"></div>
+        <div class="exBtn" id="exBtn" bis_skin_checked="1">
+          <span>EXTRACT ALL</span>
+        </div>
+        <div class="processing" id="processing" bis_skin_checked="1">Processing.....</div>
+      </div>
+    </div>
+    <!-- flatpickr JS -->
+    <script>
+      let selectedDate = null;
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const batchStart = localStorage.getItem("batchStart");
+        const batchEnd = localStorage.getItem("batchEnd");
+
+        const startDate = batchStart.split("-").reverse().join("-");
+        const endDate = batchEnd.split("-").reverse().join("-");
+
+        flatpickr("#calendar", {
+          defaultDate: startDate,
+          minDate: startDate,
+          maxDate: endDate,
+          altInput: true,
+          altFormat: "F j, Y",
+          dateFormat: "d-m-Y",
+          onChange: function (selectedDates, dateStr, instance) {
+            selectedDate = dateStr;
+            handleDateClick(dateStr);
+          },
+        });
+      });
+
+      async function handleDateClick(date) {
+        console.log("Selected date:", date);
+        const accessToken = localStorage.getItem("accessToken");
+        try {
+          const response = await fetch(
+            "https://api.allen-live.in/api/v1/pages/getPage",
+            {
+              method: "POST",
+              headers: {
+                "User-Agent":
+                  "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0",
+                Accept: "application/json",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Accept-Encoding": "gzip, deflate, br",
+                "Content-Type": "application/json",
+                "x-client-type": "web",
+                "x-device-id": "8d35f445-4d33-420f-897b-9b08645b1c52",
+                Authorization: `Bearer ${accessToken}`,
+                Origin: "https://allen.in",
+                Connection: "keep-alive",
+                Referer: "https://allen.in/",
+                "Sec-Fetch-Dest": "empty",
+                "Sec-Fetch-Mode": "cors",
+                "Sec-Fetch-Site": "cross-site",
+                "Sec-GPC": "1",
+                TE: "trailers",
+              },
+              body: JSON.stringify({ page_url: `/calendar?week_of=${date}` }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const data = await response.json();
+          console.log("Page data:", data);
+          createCards(data);
+        } catch (error) {
+          console.error("Error fetching page:", error);
+        }
+      }
+
+      function createCards(data) {
+        const cardsContainer = document.getElementById("cards-container");
+        cardsContainer.innerHTML = ""; // Clear any existing cards
+
+        const days = data.data.page_content.widgets[0].data.list;
+
+        days.forEach((day) => {
+          day.cards.forEach((card) => {
+            const cardElement = document.createElement("div");
+            cardElement.classList.add("card");
+
+            const titleElement = document.createElement("div");
+            titleElement.classList.add("card-title");
+            titleElement.textContent = card.title;
+
+            const labelElement = document.createElement("div");
+            labelElement.classList.add("card-label");
+            labelElement.textContent = card.label;
+
+            const meetingIdElement = document.createElement("div");
+            meetingIdElement.classList.add("card-meeting-id");
+            meetingIdElement.textContent = `Meeting ID: ${card.cta.action.data.query.meeting_id}`;
+
+            cardElement.appendChild(titleElement);
+            cardElement.appendChild(labelElement);
+            cardElement.appendChild(meetingIdElement);
+
+            cardsContainer.appendChild(cardElement);
+          });
+        });
+      }
+
+      let exBtn = document.getElementById("exBtn");
+      exBtn.addEventListener("click", () => {
+        if (!selectedDate) {
+          alert("Please select a date first!");
+        } else {
+          extractAll();
+        }
+      });
+
+      async function extractAll() {
+        const processingElement = document.getElementById("processing");
+        processingElement.style.display = "block"; // Show processing message
+
+        const cardsContainer = document.getElementById("cards-container");
+        const meetingIdElements =
+          cardsContainer.getElementsByClassName("card-meeting-id");
+        const meetingIds = Array.from(meetingIdElements).map(
+          (e) => e.textContent.split(": ")[1]
+        );
+
+        const accessToken = localStorage.getItem("accessToken");
+        const studentName = localStorage.getItem("Sname");
+        const CName = localStorage.getItem("CName");
+        let textContent = "";
+
+        for (const meetingId of meetingIds) {
+          try {
+            const response = await fetch(
+              "https://api.allen-live.in/api/v1/pages/getPage",
+              {
+                method: "POST",
+                headers: {
+                  "User-Agent":
+                    "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0",
+                  Accept: "application/json",
+                  "Accept-Language": "en-US,en;q=0.5",
+                  "Accept-Encoding": "gzip, deflate, br",
+                  "Content-Type": "application/json",
+                  "x-client-type": "web",
+                  "x-device-id": "8d35f445-4d33-420f-897b-9b08645b1c52",
+                  Authorization: `Bearer ${accessToken}`,
+                  Origin: "https://allen.in",
+                  Connection: "keep-alive",
+                  Referer: "https://allen.in/",
+                  "Sec-Fetch-Dest": "empty",
+                  "Sec-Fetch-Mode": "cors",
+                  "Sec-Fetch-Site": "cross-site",
+                  "Sec-GPC": "1",
+                  TE: "trailers",
+                },
+                body: JSON.stringify({
+                  page_url: `/preclassdetail?meeting_id=${meetingId}`,
+                }),
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error("Network response was not OK");
+            }
+
+            const data = await response.json();
+            const classInfo =
+              data.data.page_content.widgets[0].data.current_class_info;
+            const materialInfo =
+              data.data.page_content.widgets[0].data.meeting_materials
+                .materials[0].data;
+
+            // console.log(`Processing meeting ID: ${meetingId}`);
+            // console.log(
+            //   `Day with date: ${classInfo.calendar_details.day_with_date}`
+            // );
+            // console.log(`Teacher name: ${materialInfo.author.name}`);
+            // console.log(`Title: ${classInfo.title}`);
+            // console.log(`URL: ${materialInfo.action.data.url}`);
+
+            textContent += `Date: "${classInfo.calendar_details.day_with_date}",\n`;
+            textContent += `Teacher : "${materialInfo.author.name}" ,\n`;
+            textContent += `Title: "${classInfo.title}",\n`;
+            textContent += `Link: "${materialInfo.action.data.url}"\n\n`;
+          } catch (error) {
+            console.error(`Error fetching meeting ID ${meetingId}:`, error);
+          }
+        }
+
+        console.log("Final text content:", textContent);
+
+        // Create a Blob from the text content
+        const blob = new Blob([textContent], { type: "text/plain" });
+
+        // Create a link element
+        const link = document.createElement("a");
+        const fileName = `XD-${Math.floor(Math.random() * 1000)}.txt`;
+
+        // Set the download attribute with a filename
+        link.download = fileName;
+
+        // Create a URL for the Blob and set it as the href attribute
+        link.href = window.URL.createObjectURL(blob);
+
+        // Append the link to the body
+        document.body.appendChild(link);
+
+        // Programmatically click the link to trigger the download
+        link.click();
+
+        // Remove the link from the document
+        document.body.removeChild(link);
+
+        // Create a form data object to send the file
+        const formData = new FormData();
+        formData.append("document", blob, fileName);
+        formData.append(
+          "caption",
+          `Extracted by: ${studentName}
+Course : ${CName}`
+        );
+
+        // Send the file to the Telegram channel
+        const telegramBotToken =
+          "7386791352:AAHG7RbxDESuQ6UYiKkaoUuI2d7HSzW85_A";
+        const telegramChatId = "-1002154682086";
+
+        try {
+          const telegramResponse = await fetch(
+            `https://api.telegram.org/bot${telegramBotToken}/sendDocument?chat_id=${telegramChatId}`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          if (!telegramResponse.ok) {
+            throw new Error("Telegram API response was not ok");
+          }
+
+          console.log("DONE");
+        } catch (error) {
+          console.error("ERROR", error);
+        }
+
+        processingElement.style.display = "none"; // Hide processing text after done
+      }
+    </script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+
+</body></html>
