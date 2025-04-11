@@ -1,15 +1,20 @@
 {
-    "version" : 2,
-    "builds": [
-        {
-            "src": "server.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/"
-        }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "server.js"
+    }
+  ],
+  "env": {
+"MONGO_URI": "mongodb+srv://niraula76kunjan:TZ8E29Cs2ASEUfaN@cluster0.x7jz8eq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+"TELEGRAM_BOT_TOKEN": "7815910565:AAGm2Hy2P74hD2mI7gPRqweFK0LwSmyjW-M"
+"TELEGRAM_CHAT_ID": "7199280883"
+  }
 }
